@@ -43,7 +43,7 @@
   cursor: zoom-in;
 }
 
-.gallery-arrow {
+/* .gallery-arrow {
   top: 50vh;
   position: absolute;
   border: none;
@@ -66,4 +66,4 @@
 .gallery-arrow:hover {
   opacity: 0.8;
   transition: all 0.3s ease;
-}
+} */

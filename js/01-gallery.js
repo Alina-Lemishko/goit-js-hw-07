@@ -1,45 +1,59 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
-
 // VARIABLES
 
 const galleryEl = document.querySelector('.gallery');
-
-function makeGalleryGrid(items) {
- return items.map(({ preview, original, description }) => {
-      return `
-    <div class="gallery__item">
-      <a href="" class="gallery__link">
-        <img class="gallery__image" src='${preview}' alt="${description}" >
-      </a>
-    </div>
-    `;
-    })
-    .join('');
-  
-  
-  };
-  
-
 galleryEl.insertAdjacentHTML('beforeend', makeGalleryGrid(galleryItems));
 galleryEl.addEventListener('click', onGalleryCardClick);
 
+// FUNCTION FOR MAKING GALLERY
 
-function onGalleryCardClick(evt) {
-  evt.preventDefault();
+function makeGalleryGrid(items) {
+ return items.map(({ preview, original, description }) => {
+   return /* html */ `
+    <div class="gallery__item">
+      <a class="gallery__link" href='${original}'>
+        <img
+          class="gallery__image"
+          src='${preview}'
+          data-source='${original}'
+          alt="${description}"
+        />
+      </a>
+    </div>   
+    `;
+    })
+    .join('');
+  };
+  
 
-  if (evt.target.nodeName !== 'IMG') {
-    return;
+// FUNCTION ON GALLERY CARD CLICK AND PREVENT DEFAULT
+
+  
+  function onGalleryCardClick(event) {
+    event.preventDefault();
+    
+    if (event.target.nodeName !== 'IMG') {
+      return;
+    }
+    
+    onShow(event);
+  }
+  
+// CREATE BASIC LIGHTBOX GALLERY
+
+function onShow(event) {
+  let instance = basicLightbox.create(`
+       <img width="1280" height="853" src="${event.target.dataset.source}">
+	`)
+  instance.show()
+
+  if (onShow) {
+    galleryEl.addEventListener('keydown', event => {
+    if (event.code === 'Escape') {
+      instance.close()
+    }
+    });
   }
 }
-    
-  const imageOriginal = galleryItems.map(el => el.original);
-
-document.querySelectorAll('.gallery__image').forEach((item, i) => {
-  item.addEventListener('click', () => {
-    basicLightbox.create(`
-		<img width="1280" height="853" src="${imageOriginal[i]}">
-	`).show()
-  })
-})
