@@ -6,6 +6,8 @@ const galleryEl = document.querySelector('.gallery');
 galleryEl.insertAdjacentHTML('beforeend', makeGalleryGrid(galleryItems));
 galleryEl.addEventListener('click', onGalleryCardClick);
 
+let instance = "";
+
 // FUNCTION FOR MAKING GALLERY
 
 function makeGalleryGrid(items) {
@@ -43,16 +45,20 @@ function makeGalleryGrid(items) {
 // CREATE BASIC LIGHTBOX GALLERY
 
 function onShow(event) {
-  let instance = basicLightbox.create(`
-       <img width="1280" height="853" src="${event.target.dataset.source}">
+  instance = basicLightbox.create(`
+  <img width="1280" height="853" src="${event.target.dataset.source}">
 	`)
   instance.show()
-
+  
   if (onShow) {
-    galleryEl.addEventListener('keydown', event => {
-    if (event.code === 'Escape') {
+    galleryEl.addEventListener('keydown', onKeyDownEscape);
+  } else if(!onShow){
+    galleryEl.removeEventListener('keydown', onKeyDownEscape);
+  }
+}
+
+function onKeyDownEscape(event) {
+  if (event.code === 'Escape') {
       instance.close()
     }
-    });
-  }
 }
