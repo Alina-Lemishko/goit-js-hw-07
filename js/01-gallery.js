@@ -51,9 +51,9 @@ function onShow(event) {
   instance.show()
   
   if (onShow) {
-    galleryEl.addEventListener('keydown', onKeyDownEscape);
+    window.addEventListener('keydown', onKeyDownEscape);
   } else if(!onShow){
-    galleryEl.removeEventListener('keydown', onKeyDownEscape);
+    window.removeEventListener('keydown', onKeyDownEscape);
   }
 }
 
